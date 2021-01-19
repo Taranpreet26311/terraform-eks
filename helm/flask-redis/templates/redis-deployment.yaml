@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    "consul.hashicorp.com/connect-service-port": "{{ .Values.env.redis.port }}"
+    "consul.hashicorp.com/connect-inject": "true"
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: {{ .Values.env.redis.host }}
+  name: {{ .Values.env.redis.host }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: {{ .Values.env.redis.host }}
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: {{ .Values.env.redis.host }}
+    spec:
+      containers:
+      - image: {{ .Values.env.redis.host }}:alpine
+        imagePullPolicy: ""
+        name: {{ .Values.env.redis.host }}
+        ports:
+        - containerPort: {{ .Values.env.redis.port }}
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

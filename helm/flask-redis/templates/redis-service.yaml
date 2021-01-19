@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: {{ .Values.env.redis.host }}
+  name: {{ .Values.env.redis.host }}
+spec:
+  ports:
+  - name: "redis"
+    port: {{ .Values.env.redis.port }}
+    targetPort: {{ .Values.env.redis.port }}
+  selector:
+    io.kompose.service: {{ .Values.env.redis.host }}
+status:
+  loadBalancer: {}

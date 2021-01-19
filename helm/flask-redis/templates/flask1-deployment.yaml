@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    "consul.hashicorp.com/connect-inject": "true"
+    "consul.hashicorp.com/connect-service-upstreams": "{{ .Values.env.redis.host }}:{{ .Values.env.redis.port }}"
+    "consul.hashicorp.com/connect-service-port": "{{ .Values.env.flask_port }}"
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: flask1
+  name: flask1
+spec:
+  replicas: {{ .Values.env.flask1.replicas }}
+  selector:
+    matchLabels:
+      io.kompose.service: flask1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: flask1
+    spec:
+      containers:
+      - env:
+        - name: HOST
+          value: {{ .Values.env.redis.host }}
+        image: {{ .Values.env.flask1.image }}:{{ .Values.env.flask1.image_tag }}
+        imagePullPolicy: ""
+        name: flask1
+        ports:
+        - containerPort: {{ .Values.env.flask_port }}
+        resources: {}
+        volumeMounts:
+        - mountPath: /code
+          name: flask1-claim0
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: flask1-claim0
+        persistentVolumeClaim:
+          claimName: flask1-claim0
+status: {}
