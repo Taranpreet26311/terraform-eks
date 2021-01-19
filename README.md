@@ -10,5 +10,5 @@ Please make sure you have required permission in AWS such as EKS,IAM,EC2, etc. M
 
 To access flask app use port-forwarding
 
-`kubectl port-forward flask1-xxxx-xxxxx 1111:5000'
+`kubectl port-forward flask1-xxxx-xxxxx 1111:5000`
 
